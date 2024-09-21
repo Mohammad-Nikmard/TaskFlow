@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:riverpod_todo/feature/onBoarding/onbaording_screen.dart';
-import 'package:riverpod_todo/feature/tasks/ui/add_task_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:riverpod_todo/feature/tasks/model/task.dart';
 import 'package:riverpod_todo/feature/tasks/ui/home_screen.dart';
 import 'package:riverpod_todo/theme/light_theme.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(TaskAdapter());
+
+  await Hive.openBox<Task>('TaskBox');
+
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

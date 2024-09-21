@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_todo/constants/color_const.dart';
+import 'package:riverpod_todo/feature/tasks/model/task.dart';
+import 'package:riverpod_todo/service/task_provider.dart';
 import 'package:riverpod_todo/util/theme_extension.dart';
 import 'package:riverpod_todo/widget/custom_textfield.dart';
 import 'package:riverpod_todo/widget/custom_top_design.dart';
@@ -41,18 +44,6 @@ class AddTaskScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 25),
                   const _InputSection(),
-                  const SizedBox(height: 50),
-                  SizedBox(
-                    height: 44,
-                    width: 220,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Add to list',
-                        style: context.buttonStyle,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -102,6 +93,50 @@ class __InputSectionState extends State<_InputSection> {
           controller: subtaskController,
           hintText: 'Enter your Task Detail',
           maxLines: 5,
+        ),
+        const SizedBox(height: 50),
+        Consumer(
+          builder: (context, ref, child) {
+            ref.listen<AsyncValue<List<Task>>>(
+              taskNotifierProvider,
+              (prevoius, next) {
+                if (next is AsyncData && !next.isLoading) {
+                  Navigator.pop(context);
+                } else if (next is AsyncError) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Error'),
+                    ),
+                  );
+                }
+              },
+            );
+
+            final taskProvider = ref.watch(taskNotifierProvider);
+            switch (taskProvider) {
+              case AsyncLoading():
+                return const CircularProgressIndicator(
+                  color: ConstColors.greenColor,
+                );
+
+              case _:
+                return SizedBox(
+                  height: 44,
+                  width: 220,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      ref.read(taskNotifierProvider.notifier).addTask(
+                          taskController.text.trim(),
+                          subtaskController.text.trim());
+                    },
+                    child: Text(
+                      'Add to list',
+                      style: context.buttonStyle,
+                    ),
+                  ),
+                );
+            }
+          },
         ),
       ],
     );
