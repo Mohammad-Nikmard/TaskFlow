@@ -34,7 +34,7 @@ flutter:
 
   assets:
     - assets/svg/
-  #   - images/a_dot_ham.jpeg
+    - assets/images/
 
   fonts:
     - family: P
