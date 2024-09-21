@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:riverpod_todo/constants/color_const.dart';
-import 'package:riverpod_todo/util/string_extension.dart';
 
 class CustomTopDesign extends StatelessWidget {
   const CustomTopDesign({
@@ -47,10 +45,9 @@ class CustomTopDesign extends StatelessWidget {
             },
             child: Visibility(
               visible: showBackIcon,
-              child: SvgPicture.asset(
-                'icon_arrow_back'.toSVG,
-                height: 26,
-                width: 26,
+              child: const Icon(
+                Icons.arrow_back,
+                size: 26,
               ),
             ),
           ),
