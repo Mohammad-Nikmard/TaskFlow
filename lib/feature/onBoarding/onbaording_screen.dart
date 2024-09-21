@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:riverpod_todo/feature/auth/ui/signup_screen.dart';
 import 'package:riverpod_todo/util/theme_extension.dart';
 import 'package:riverpod_todo/widget/custom_top_design.dart';
 
@@ -11,7 +12,9 @@ class OnbaordingScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          const CustomTopDesign(),
+          const CustomTopDesign(
+            showBackIcon: false,
+          ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -39,7 +42,14 @@ class OnbaordingScreen extends StatelessWidget {
                   width: 220,
                   height: 44,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignupScreen(),
+                        ),
+                      );
+                    },
                     child: Text(
                       'Get Started',
                       style: context.buttonStyle,
