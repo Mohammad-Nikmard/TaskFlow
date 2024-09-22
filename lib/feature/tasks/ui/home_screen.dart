@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_todo/constants/color_const.dart';
 import 'package:riverpod_todo/feature/tasks/model/task.dart';
@@ -16,24 +17,53 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: ConstColors.backgroundColor,
       body: Stack(
         children: [
-          const CustomTopDesign(
-            showBackIcon: false,
+          Stack(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    height: 250,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: ConstColors.greenColor.withOpacity(0.7),
+                      border: Border(
+                        bottom: BorderSide(
+                          width: 0.2,
+                          color: ConstColors.greenColor.withOpacity(0.7),
+                        ),
+                      ),
+                    ),
+                  ),
+                  ClipPath(
+                    clipper: TriangleClipper(),
+                    child: Container(
+                      height: 50,
+                      width: double.infinity,
+                      color: ConstColors.greenColor.withOpacity(0.7),
+                    ),
+                  ),
+                ],
+              ),
+              const CustomTopDesign(
+                showBackIcon: false,
+              ),
+            ],
           ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CircleAvatar(
-                  radius: 60,
-                ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 50),
                 Text(
                   'Welcome Mohammad',
                   style: context.titleStyle,
                 ),
                 const SizedBox(height: 20),
-                Image.asset(
-                  'assets/images/home_vector.png',
+                Padding(
+                  padding: const EdgeInsets.only(left: 50),
+                  child: Image.asset(
+                    'assets/images/home_vector.png',
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Padding(
@@ -65,7 +95,7 @@ class _TaskTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 270,
+      height: 350,
       width: double.infinity,
       child: Card(
         shape: const RoundedRectangleBorder(
@@ -121,7 +151,7 @@ class _TaskTab extends StatelessWidget {
                   case AsyncData(:final value):
                     if (value.isEmpty) {
                       return Padding(
-                        padding: const EdgeInsets.only(top: 50),
+                        padding: const EdgeInsets.only(top: 100),
                         child: Text(
                           'Nothing to do.',
                           style: context.blackBodyStyle,
@@ -129,7 +159,7 @@ class _TaskTab extends StatelessWidget {
                       );
                     } else {
                       return SizedBox(
-                        height: 180,
+                        height: 240,
                         width: MediaQuery.of(context).size.width - 100,
                         child: Scrollbar(
                           child: ListView.builder(

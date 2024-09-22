@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_todo/constants/color_const.dart';
 import 'package:riverpod_todo/feature/auth/ui/login_screen.dart';
+import 'package:riverpod_todo/feature/tasks/ui/home_screen.dart';
 import 'package:riverpod_todo/util/theme_extension.dart';
 import 'package:riverpod_todo/widget/custom_textfield.dart';
 import 'package:riverpod_todo/widget/custom_top_design.dart';
@@ -43,7 +44,13 @@ class SignupScreen extends StatelessWidget {
                     height: 44,
                     width: 220,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
+                        );
+                      },
                       child: Text(
                         'Sign Up',
                         style: context.buttonStyle,

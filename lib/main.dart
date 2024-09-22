@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:riverpod_todo/feature/onBoarding/onbaording_screen.dart';
 import 'package:riverpod_todo/feature/tasks/model/task.dart';
-import 'package:riverpod_todo/feature/tasks/ui/home_screen.dart';
 import 'package:riverpod_todo/theme/light_theme.dart';
 
 void main() async {
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
-      home: const HomeScreen(),
+      home: const OnbaordingScreen(),
     );
   }
 }
