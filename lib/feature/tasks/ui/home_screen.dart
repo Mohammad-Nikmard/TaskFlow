@@ -119,24 +119,34 @@ class _TaskTab extends StatelessWidget {
                     ref.watch(taskNotifierProvider);
                 switch (taskData) {
                   case AsyncData(:final value):
-                    return SizedBox(
-                      height: 180,
-                      width: MediaQuery.of(context).size.width - 100,
-                      child: Scrollbar(
-                        child: ListView.builder(
-                          padding: EdgeInsets.zero,
-                          itemBuilder: (context, index) {
-                            return CustomTaskWidget(
-                              text: value[index].title,
-                            );
-                          },
-                          itemCount: value.length,
+                    if (value.isEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 50),
+                        child: Text(
+                          'Nothing to do.',
+                          style: context.blackBodyStyle,
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      return SizedBox(
+                        height: 180,
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: Scrollbar(
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemBuilder: (context, index) {
+                              return CustomTaskWidget(
+                                text: value[index].title,
+                                index: index,
+                              );
+                            },
+                            itemCount: value.length,
+                          ),
+                        ),
+                      );
+                    }
 
                   case AsyncError(:final error):
-                    print(error);
                     return Text(error.toString());
 
                   case _:
@@ -157,8 +167,10 @@ class CustomTaskWidget extends StatefulWidget {
   const CustomTaskWidget({
     super.key,
     required this.text,
+    required this.index,
   });
   final String text;
+  final int index;
 
   @override
   State<CustomTaskWidget> createState() => _CustomTaskWidgetState();
@@ -191,14 +203,30 @@ class _CustomTaskWidgetState extends State<CustomTaskWidget> {
           },
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width - 160,
+          width: MediaQuery.of(context).size.width - 200,
           height: 20,
           child: Text(
             widget.text,
             style: context.blackBodyStyle,
             overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.start,
           ),
-        )
+        ),
+        Consumer(
+          builder: (context, ref, child) {
+            return IconButton(
+              onPressed: () {
+                ref
+                    .read(taskNotifierProvider.notifier)
+                    .deleteTask(widget.index);
+              },
+              icon: const Icon(
+                Icons.remove,
+                size: 26,
+              ),
+            );
+          },
+        ),
       ],
     );
   }
